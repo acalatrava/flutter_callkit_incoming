@@ -105,6 +105,21 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
             }
             result("OK")
             break
+        case "setHold":
+            guard let args = call.arguments else {
+                result("OK")
+                return
+            }
+            if(self.isFromPushKit){
+                self.holdCall(self.data!)
+            }else{
+                if let getArgs = args as? [String: Any] {
+                    self.data = Data(args: getArgs)
+                    self.holdCall(self.data!)
+                }
+            }
+            result("OK")
+            break
         case "activeCalls":
             result(self.callManager?.activeCalls())
             break;
@@ -183,6 +198,20 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
             call = Call(uuid: UUID(uuidString: data.uuid)!)
         }
         self.callManager?.endCall(call: call!)
+    }
+    
+    @objc public func setHold(_ data: Data) {
+        var call: Call? = nil
+        var onHold: Bool? = false
+        if(self.isFromPushKit){
+            call = Call(uuid: UUID(uuidString: self.data!.uuid)!)
+            onHold = self.data!.onHold!
+            self.isFromPushKit = false
+        }else {
+            call = Call(uuid: UUID(uuidString: data.uuid)!)
+            onHold = data.onHold!
+        }
+        self.callManager?.setHold(call: call!, onHold: onHold!)
     }
     
     @objc public func activeCalls() -> [[String: String]]? {
