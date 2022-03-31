@@ -111,11 +111,11 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
                 return
             }
             if(self.isFromPushKit){
-                self.holdCall(self.data!)
+                self.setHold(self.data!)
             }else{
                 if let getArgs = args as? [String: Any] {
                     self.data = Data(args: getArgs)
-                    self.holdCall(self.data!)
+                    self.setHold(self.data!)
                 }
             }
             result("OK")
@@ -205,11 +205,11 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         var onHold: Bool? = false
         if(self.isFromPushKit){
             call = Call(uuid: UUID(uuidString: self.data!.uuid)!)
-            onHold = self.data!.onHold!
+            onHold = self.data!.onHold
             self.isFromPushKit = false
         }else {
             call = Call(uuid: UUID(uuidString: data.uuid)!)
-            onHold = data.onHold!
+            onHold = data.onHold
         }
         self.callManager?.setHold(call: call!, onHold: onHold!)
     }
