@@ -75,6 +75,7 @@ class CallManager: NSObject {
         let callTransaction = CXTransaction()
         callTransaction.addAction(handleCall)
         //requestCall
+        self.requestCall(callTransaction, action: "holdCall")
     }
     
     

@@ -60,6 +60,13 @@ class FlutterCallkitIncoming {
     await _channel.invokeMethod("endCall", params);
   }
 
+  /// Hold an active call.
+  /// On iOS, using Callkit (params => uuid, onHold).
+  /// On Android, Nothing.
+  static Future setHold(dynamic params) async {
+    await _channel.invokeMethod("setHold", params);
+  }
+
   /// End all calls.
   static Future endAllCalls() async {
     await _channel.invokeMethod("endAllCalls");
