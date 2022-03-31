@@ -126,6 +126,7 @@ public class Call: NSObject {
     @objc public var type: Int
     @objc public var duration: Int
     @objc public var extra: NSDictionary
+    @objc public var onHold: Bool
     
     //iOS
     @objc public var iconName: String
@@ -168,6 +169,7 @@ public class Call: NSObject {
         self.audioSessionActive = true
         self.audioSessionPreferredSampleRate = 44100.0
         self.audioSessionPreferredIOBufferDuration = 0.005
+        self.onHold = false
     }
     
     @objc public convenience init(args: NSDictionary) {
@@ -187,6 +189,7 @@ public class Call: NSObject {
         self.type = args["type"] as? Int ?? 0
         self.duration = args["duration"] as? Int ?? 30000
         self.extra = args["extra"] as? NSDictionary ?? [:]
+        self.onHold = args["onHold"] as? Bool ?? false
         
         
         if let ios = args["ios"] as? [String: Any] {
