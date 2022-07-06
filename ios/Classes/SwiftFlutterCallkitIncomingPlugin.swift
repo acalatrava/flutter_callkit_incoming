@@ -168,15 +168,22 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         
         let uuid = UUID(uuidString: data.uuid)
         
-        configurAudioSession()
-        self.sharedProvider?.reportNewIncomingCall(with: uuid!, update: callUpdate) { error in
+        do {
+        try configurAudioSession()
+        try self.sharedProvider?.reportNewIncomingCall(with: uuid!, update: callUpdate) { error in
             if(error == nil) {
                 self.configurAudioSession()
                 let call = Call(uuid: uuid!)
                 call.handle = data.handle
                 self.callManager?.addCall(call)
                 self.sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_INCOMING, data.toJSON())
+            } else {
+                self.sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_INCOMING, data.toJSON())
+                print(error)
             }
+        }
+        } catch {
+            print(error)
         }
     }
     
