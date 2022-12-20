@@ -60,6 +60,13 @@ class FlutterCallkitIncoming {
     await _channel.invokeMethod("endCall", params);
   }
 
+  /// Answer an Incoming call.
+  /// On iOS, using Callkit(update a history into the Phone app).
+  /// On Android, Nothing(only callback event listener).
+  static Future answerCall(dynamic params) async {
+    await _channel.invokeMethod("answerCall", params);
+  }
+
   /// Hold an active call.
   /// On iOS, using Callkit (params => uuid, onHold).
   /// On Android, Nothing.

@@ -105,6 +105,21 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
             }
             result("OK")
             break
+        case "answerCall":
+            guard let args = call.arguments else {
+                result("OK")
+                return
+            }
+            if(self.isFromPushKit){
+                self.answerCall(self.data!)
+            }else{
+                if let getArgs = args as? [String: Any] {
+                    self.data = Data(args: getArgs)
+                    self.answerCall(self.data!)
+                }
+            }
+            result("OK")
+            break
         case "setHold":
             guard let args = call.arguments else {
                 result("OK")
