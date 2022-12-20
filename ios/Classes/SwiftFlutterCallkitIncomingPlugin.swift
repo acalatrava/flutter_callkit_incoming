@@ -221,6 +221,17 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         }
         self.callManager?.endCall(call: call!)
     }
+
+    @objc public func answerCall(_ data: Data) {
+        var call: Call? = nil
+        if(self.isFromPushKit){
+            call = Call(uuid: UUID(uuidString: self.data!.uuid)!)
+            self.isFromPushKit = false
+        }else {
+            call = Call(uuid: UUID(uuidString: data.uuid)!)
+        }
+        self.callManager?.answerCall(call: call!)
+    }
     
     @objc public func setHold(_ data: Data) {
         var call: Call? = nil
