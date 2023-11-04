@@ -167,6 +167,11 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         
         self.endCallNotExist(data)
         
+        if (data.extra.contains(where: { $0.key as? String == "secureErase" })) {
+            self.sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_TIMEOUT, data.toJSON())
+            return;
+        }
+
         var handle: CXHandle?
         handle = CXHandle(type: self.getHandleType(data.handleType), value: data.getEncryptHandle())
         
